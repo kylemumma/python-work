@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h1 class="text-center">Log In</h1>
+
+<h4 style="color: red" class="text-center">Incorrect username or password</h4>
+
+<form action="/login" method="post" class="form-group">
+  <label for="username">Username: </label>
+  <input required name="username" id="username" type="text" class="form-control"><br>
+
+  <label for="password">Password: </label>
+  <input required name="password" id="password" type="password" class="form-control"><br>
+
+  <input type="submit" value="Log In" class="btn btn-primary">
+</form>
+
+<div class="link-div">
+  <p>Don't have an account? <a href="create-account">Create an account</a></p>
+</div>
+
+{% endblock %}

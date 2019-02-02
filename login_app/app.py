@@ -31,7 +31,7 @@ def login():
         db.close()
         return "<h1 style='color:green'>Successfully Logged In</h1>"
     db.close()
-    return "<h1 style='color:red'>Log In Failed</h1>"
+    return render_template("incorrect-login.html")
 
 
 
@@ -49,4 +49,4 @@ def register():
     db.commit()
     db.close()
 
-    return render_template("create-account.html", title="Create Account")
+    return render_template("account-created.html", title="Account Created")
