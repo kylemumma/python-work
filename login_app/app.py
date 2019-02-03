@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, flash
 import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #flask
 app = Flask(__name__)
-app.secret_key = "123233232t4443435345"
+app.secret_key = 'ec40e9586e47b6594808650588668ef4920c31dd808afb8d'
 
 @app.route("/")
 def main():
@@ -22,14 +23,13 @@ def login():
     c = db.cursor()
 
     #check if username and pass are in sql database
-    accounts = c.execute("SELECT * FROM logins WHERE username = :username AND password = :password", {"username" : username, "password" : password})
+    accounts = c.execute("SELECT * FROM logins WHERE username = :username", {"username" : username})
 
-    num_of_accounts = 0
     for account in accounts:
-        num_of_accounts += 1
-    if(num_of_accounts == 1):
-        db.close()
-        return "<h1 style='color:green'>Successfully Logged In</h1>"
+        print(account[1])
+        if(check_password_hash(account[1], password)):
+            db.close()
+            return "<h1 style='color:green'>Successfully Logged In</h1>"
     db.close()
     return render_template("incorrect-login.html")
 
@@ -44,7 +44,7 @@ def register():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    c.execute("INSERT INTO logins (username, password) VALUES (:username, :password)", {"username" : username, "password" : password})
+    c.execute("INSERT INTO logins (username, password) VALUES (:username, :password)", {"username" : username, "password" : generate_password_hash(password)})
 
     db.commit()
     db.close()
